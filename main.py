@@ -156,25 +156,3 @@ bookings_by_month = (
 )
 
 print(bookings_by_month)
-
-# ==================================================
-# ETAPA 6 - Banco de Dados SQLite
-# ==================================================
-
-import sqlite3
-
-# Cria conexão com o banco SQLite
-connection = sqlite3.connect("hotel_bookings.db")
-
-# Envia o DataFrame para o banco
-df.to_sql(
-    "hotel_bookings",
-    connection,
-    if_exists="replace",
-    index=False
-)
-
-print("Database created successfully!")
-
-# Fecha a conexão
-connection.close()
