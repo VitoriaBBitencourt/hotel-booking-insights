@@ -96,3 +96,85 @@ print(df[[
     "total_guests"
 ]].head())
 
+# ==================================================
+# ETAPA 5 - Análise Exploratória dos Dados (EDA)
+# ==================================================
+
+# ==================================================
+# ETAPA 5.1 - Reservas por hotel
+# ==================================================
+
+# Conta a quantidade de reservas por tipo de hotel
+bookings_by_hotel = df["hotel"].value_counts()
+
+print(bookings_by_hotel)
+
+# ==================================================
+# ETAPA 5.2 - Taxa de cancelamento
+# ==================================================
+
+# Calcula a porcentagem de reservas canceladas
+cancellation_rate = df["is_canceled"].mean() * 100
+
+print(f"Cancellation Rate: {cancellation_rate:.2f}%")
+
+# ==================================================
+# ETAPA 5.3 - Diária média (ADR)
+# ==================================================
+
+# Calcula a diária média das reservas
+average_adr = df["adr"].mean()
+
+print(f"Average Daily Rate (ADR): {average_adr:.2f}")
+
+# ==================================================
+# ETAPA 5.3.1 - Comparação do ADR por hotel
+# ==================================================
+
+# Calcula a diária média de cada hotel
+adr_by_hotel = df.groupby("hotel")["adr"].mean()
+
+print(adr_by_hotel)
+
+# ==================================================
+# ETAPA 5.5 - Reservas por mês
+# ==================================================
+
+# Conta a quantidade de reservas em cada mês
+# Ordem cronológica dos meses
+month_order = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+]
+
+# Conta as reservas e organiza os meses em ordem cronológica
+bookings_by_month = (
+    df["arrival_date_month"]
+    .value_counts()
+    .reindex(month_order)
+)
+
+print(bookings_by_month)
+
+# ==================================================
+# ETAPA 6 - Banco de Dados SQLite
+# ==================================================
+
+import sqlite3
+
+# Cria conexão com o banco SQLite
+connection = sqlite3.connect("hotel_bookings.db")
+
+# Envia o DataFrame para o banco
+df.to_sql(
+    "hotel_bookings",
+    connection,
+    if_exists="replace",
+    index=False
+)
+
+print("Database created successfully!")
+
+# Fecha a conexão
+connection.close()
