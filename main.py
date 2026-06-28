@@ -38,3 +38,28 @@ df = df[columns].copy()
 df["children"] = df["children"].fillna(0)
 
 print(df["children"].isnull().sum())
+
+# ==================================================
+# ETAPA 3.2 - Análise da coluna 'country'
+# ==================================================
+
+# Exibe a quantidade de valores ausentes da coluna 'country'
+print("Valores ausentes em 'country':")
+print(df["country"].isnull().sum())
+
+print("\n" + "=" * 60)
+
+# Exibe os países mais frequentes na base
+print("Países mais frequentes:")
+print(df["country"].value_counts().head(10))
+
+# ==================================================
+# ETAPA 3.2 - Tratamento da coluna 'country'
+# ==================================================
+
+# Preenche valores ausentes da coluna 'country' com "Unknown".
+# Essa abordagem preserva todos os registros da base sem atribuir
+# incorretamente um país aos hóspedes.
+df["country"] = df["country"].fillna("Unknown")
+
+print(df["country"].isnull().sum())
