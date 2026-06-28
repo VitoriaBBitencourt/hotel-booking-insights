@@ -156,3 +156,150 @@ bookings_by_month = (
 )
 
 print(bookings_by_month)
+
+# ==================================================
+# ETAPA 6 - Banco de Dados SQLite
+# ==================================================
+
+import sqlite3
+
+# Cria conexão com o banco SQLite
+connection = sqlite3.connect("hotel_bookings.db")
+
+# Envia o DataFrame para o banco
+df.to_sql(
+    "hotel_bookings",
+    connection,
+    if_exists="replace",
+    index=False
+)
+
+print("Database created successfully!")
+
+# Fecha a conexão
+connection.close()
+
+# ==================================================
+# ETAPA 7 - Visualizações
+# ==================================================
+
+import matplotlib.pyplot as plt
+from pathlib import Path
+
+# Cria a pasta para salvar os gráficos
+output_dir = Path("outputs/figures")
+output_dir.mkdir(parents=True, exist_ok=True)
+
+# ==================================================
+# ETAPA 7.1 - Reservas por hotel
+# ==================================================
+
+bookings_by_hotel = df["hotel"].value_counts()
+
+plt.figure(figsize=(8, 5))
+
+bookings_by_hotel.plot(kind="bar")
+
+plt.title("Number of Bookings by Hotel")
+plt.xlabel("Hotel")
+plt.ylabel("Number of Bookings")
+
+# Mantém os rótulos na horizontal
+plt.xticks(rotation=0)
+
+plt.tight_layout()
+
+# Salva o gráfico
+plt.savefig(output_dir / "bookings_by_hotel.png", dpi=300)
+
+# Exibe o gráfico
+plt.show()
+
+# Fecha a figura
+plt.close()
+
+# ==================================================
+# ETAPA 7.2 - ADR médio por hotel
+# ==================================================
+
+adr_by_hotel = df.groupby("hotel")["adr"].mean()
+
+plt.figure(figsize=(8, 5))
+
+adr_by_hotel.plot(kind="bar")
+
+plt.title("Average Daily Rate (ADR) by Hotel")
+plt.xlabel("Hotel")
+plt.ylabel("Average ADR")
+
+# Mantém os rótulos na horizontal
+plt.xticks(rotation=0)
+
+plt.tight_layout()
+
+# Salva o gráfico
+plt.savefig(output_dir / "adr_by_hotel.png", dpi=300)
+
+# Exibe o gráfico
+plt.show()
+
+# Fecha a figura
+plt.close()
+
+# ==================================================
+# ETAPA 7.3 - Reservas por mês
+# ==================================================
+
+month_order = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+]
+
+bookings_by_month = (
+    df["arrival_date_month"]
+    .value_counts()
+    .reindex(month_order)
+)
+
+plt.figure(figsize=(10, 5))
+
+bookings_by_month.plot(kind="bar")
+
+plt.title("Bookings by Month")
+plt.xlabel("Month")
+plt.ylabel("Number of Bookings")
+
+plt.xticks(rotation=45)
+
+plt.tight_layout()
+
+plt.savefig(output_dir / "bookings_by_month.png", dpi=300)
+
+plt.show()
+
+plt.close()
+
+# ==================================================
+# ETAPA 7.4 - Reservas por segmento de mercado
+# ==================================================
+
+market_segment = df["market_segment"].value_counts()
+
+plt.figure(figsize=(10, 6))
+
+market_segment.plot(kind="bar")
+
+plt.title("Bookings by Market Segment")
+plt.xlabel("Market Segment")
+plt.ylabel("Number of Bookings")
+
+plt.xticks(rotation=45, ha="right")
+
+plt.tight_layout()
+
+plt.savefig(output_dir / "market_segments.png", dpi=300)
+
+plt.show()
+
+plt.close()
