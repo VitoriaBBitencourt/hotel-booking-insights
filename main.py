@@ -63,3 +63,36 @@ print(df["country"].value_counts().head(10))
 df["country"] = df["country"].fillna("Unknown")
 
 print(df["country"].isnull().sum())
+
+# ==================================================
+# ETAPA 4.1 - Total de noites da hospedagem
+# ==================================================
+
+# Calcula o número total de noites da reserva
+df["total_nights"] = (
+    df["stays_in_weekend_nights"] +
+    df["stays_in_week_nights"]
+)
+
+print(df[[
+    "stays_in_weekend_nights",
+    "stays_in_week_nights",
+    "total_nights"
+]].head())
+
+# ==================================================
+# ETAPA 4.2 - Total de hóspedes
+# ==================================================
+
+# Calcula o número total de hóspedes por reserva
+df["total_guests"] = (
+    df["adults"] +
+    df["children"]
+)
+
+print(df[[
+    "adults",
+    "children",
+    "total_guests"
+]].head())
+
