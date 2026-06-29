@@ -4,11 +4,11 @@ import pandas as pd
 # ETAPA 3 - Limpeza dos Dados
 # ==================================================
 
-# Carrega o arquivo CSV contendo os dados das reservas
+# Carreguei o arquivo CSV contendo os dados das reservas
 df = pd.read_csv("data/hotel_bookings.csv")
 
-# Mantemos apenas as colunas relevantes para os indicadores
-# definidos no escopo do projeto.
+# Mantive apenas as colunas relevantes para os indicadores
+# defini no escopo do projeto.
 columns = [
     "hotel",
     "is_canceled",
@@ -24,7 +24,7 @@ columns = [
     "adr"
 ]
 
-# Criamos uma cópia para trabalhar apenas com os dados
+# Criei uma cópia para trabalhar apenas com os dados
 # necessários para a análise.
 df = df[columns].copy()
 
